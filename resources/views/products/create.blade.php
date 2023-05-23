@@ -7,8 +7,17 @@
                 @csrf
                 <div class="titlebar">
                     <h1>Add Product</h1>
-                    <button>Save</button>
+                    {{-- <button>Save</button> --}}
                 </div>
+                @if ($errors->any())
+                    <div>
+                        <ul>
+                            @foreach ($errors->all() as $error )
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="card">
                     <div>
                         <label>Name</label>
@@ -21,15 +30,18 @@
                     </div>
                     <div>
                         <label>Category</label>
-                        <select name="" id="">
-                            <option value="">Email Subscription</option>
+                        <select name="category" id="">
+                            @foreach (json_decode('{"Smartphone":"Smartphone","Smart TV": "Smart TV","Computer" : "Computer" }', true) as $optionKey=>$optionValue )
+                              <option value="{{ $optionKey }}">{{ $optionValue }}</option>
+                            @endforeach
+                            
                         </select>
                         <hr>
-                        <label>Inventory</label>
-                        <input type="text" class="input">
+                        <label>Quantity</label>
+                        <input type="text" class="input" name="quantity">
                         <hr>
                         <label>Price</label>
-                        <input type="text" class="input">
+                        <input type="text" class="input" name="price">
                     </div>
                 </div>
                 <div class="titlebar">

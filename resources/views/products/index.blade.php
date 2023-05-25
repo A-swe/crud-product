@@ -54,8 +54,8 @@
                             </span>
                         </div>
                         <div class="relative">
-                            <input class="search-input" type="text" name="search" value="{{ request('search') }}" placeholder="Search product..."
-                                value="{{ request('search') }}">
+                            <input class="search-input" type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Search product..." value="{{ request('search') }}">
                         </div>
                     </div>
                 </form>
@@ -74,92 +74,51 @@
                             <p>{{ $product->category }}</p>
                             <p>{{ $product->quantity }}</p>
                             {{-- <p>Inventory</p> --}}
-                            <div>
-                                <button class="btn btn-success">
+                            <div style="display: flex">
+                                <a href="{{ route('products.edit', $product->id) }}" class="btn-link btn btn-success" style="padding-top:4px;padding-bottom:4px">
                                     <i class="fas fa-pencil-alt"></i>
-                                </button>
-                                <button class="btn btn-danger">
-                                    <i class="far fa-trash-alt"></i>
-                                </button>
+                                </a>
+                                <form action="{{ route('products.destroy', $product->id) }}" method="post">
+                                    @method('delete')
+                                    @csrf
+                                    <button href="" class="btn btn-danger" onclick="deleteConfirm(event)">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
+
                             </div>
                         @endforeach
                     @else
-                            <p>Product not found</p>
+                        <p>Product not found</p>
                     @endif
 
                 </div>
                 <div class="table-paginate">
                     {{ $products->links('layouts.pagination') }}
-                    
+
                 </div>
             </div>
         </section>
-        {{-- <section>
-            <div class="titlebar">
-                <h1>Add Product</h1>
-                <button>Save</button>
-            </div>
-            <div class="card">
-                <div>
-                    <label>Name</label>
-                    <input type="text">
-                    <label>Description (optional)</label>
-                    <textarea cols="10" rows="5"></textarea>
-                    <label>Add Image</label>
-                    <img src="" alt="" class="img-product" />
-                    <input type="file">
-                </div>
-                <div>
-                    <label>Category</label>
-                    <select name="" id="">
-                        <option value="">Email Subscription</option>
-                    </select>
-                    <hr>
-                    <label>Inventory</label>
-                    <input type="text" class="input">
-                    <hr>
-                    <label>Price</label>
-                    <input type="text" class="input">
-                </div>
-            </div>
-            <div class="titlebar">
-                <h1></h1>
-                <button>Save</button>
-            </div>
-        </section> --}}
-        {{-- <section>
-            <div class="titlebar">
-                <h1>Edit Product</h1>
-                <button>Save</button>
-            </div>
-            <div class="card">
-                <div>
-                    <label>Name</label>
-                    <input type="text">
-                    <label>Description (optional)</label>
-                    <textarea cols="10" rows="5"></textarea>
-                    <label>Add Image</label>
-                    <img src="1.jpg" alt="" class="img-product" />
-                    <input type="file">
-                </div>
-                <div>
-                    <label>Category</label>
-                    <select name="" id="">
-                        <option value="">Email Subscription</option>
-                    </select>
-                    <hr>
-                    <label>Inventory</label>
-                    <input type="text" class="input">
-                    <hr>
-                    <label>Price</label>
-                    <input type="text" class="input">
-                </div>
-            </div>
-            <div class="titlebar">
-                <h1></h1>
-                <button>Save</button>
-            </div>
-        </section> --}}
+
         <br>
     </main>
+    <script>
+        window.deleteConfirm = function(e) {
+            e.preventDefault();
+            var form = e.target.form;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            })
+        }
+    </script>
 @endsection
